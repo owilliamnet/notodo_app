@@ -8,9 +8,9 @@ class NoDoItem extends StatelessWidget {
   NoDoItem(this._itemName, this._dateCreated);
 
   NoDoItem.map(dynamic obj) {
-    this._itemName = obj["_itemName"];
-    this._dateCreated = obj["_dateCreated"];
-    this._id = obj["_id"];
+    this._itemName = obj["itemName"];
+    this._dateCreated = obj["dateCreated"];
+    this._id = obj["id"];
   }
 
   String get itemName => _itemName;
@@ -42,21 +42,26 @@ class NoDoItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(_itemName,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18)),
-          Container(
-            margin: const EdgeInsets.only(top: 5),
-            child: Text(
-              "Created on: $_dateCreated",
-              style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 14,
-                  fontStyle: FontStyle.italic),
-            ),
-          )
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(_itemName == null ?  "Sem Nome" : _itemName ,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14)),
+              Container(
+                margin: const EdgeInsets.only(top: 5),
+                child: Text(
+                  "Created on: $_dateCreated",
+                  style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 10,
+                      fontStyle: FontStyle.italic),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

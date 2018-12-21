@@ -21,20 +21,52 @@ class _NoTodoScreenState extends State<NoTodoScreen> {
     _textEditingController.clear();
 
     NoDoItem nodoIten = NoDoItem(text, DateTime.now().toIso8601String());
-    int saveItemId = await db.saveItem(nodoIten);
+    int savedItemID = await db.saveItem(nodoIten);
+
+    NoDoItem addedItem = await db.getItem(savedItemID);
 
     setState(() {
-      _itemList.insert(0, addItem);
+      _itemList.insert(0, addedItem);
     });
 
-    print("Item saved id: $saveItemId");
+    print("Item saved id: $savedItemID");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black87,
-      body: Column(),
+      body: Column(
+        children: <Widget>[
+          Flexible(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(8),
+              reverse: false,
+              itemCount: _itemList.length,
+              itemBuilder: (_, int index) {
+                return Card(
+                  color: Colors.white10,
+                  child: ListTile(
+                    title: _itemList[index],
+                    onLongPress: () => debugPrint("clicked"),
+                    trailing: Listener(
+                      key: Key(_itemList[index].itemName),
+                      child: Icon(
+                        Icons.remove_circle,
+                        color: Colors.redAccent,
+                      ),
+                      onPointerDown: (pointerEvent) => debugPrint(""),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          Divider(
+            height: 1,
+          )
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         tooltip: "Add Item",
         backgroundColor: Colors.redAccent,
@@ -89,8 +121,12 @@ class _NoTodoScreenState extends State<NoTodoScreen> {
   _readNoDoList() async {
     List items = await db.getItems();
     items.forEach((item) {
-      NoDoItem nodoItem = NoDoItem.fromMap(item);
-      print("DB Items: ${nodoItem.itemName}");
+      //NoDoItem nodoItem = NoDoItem.fromMap(item);
+      setState(() {
+        _itemList.add(NoDoItem.map(item));
+      });
+
+      //print("DB Items: ${nodoItem.itemName}");
     });
   }
 }

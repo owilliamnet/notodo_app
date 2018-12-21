@@ -68,7 +68,7 @@ class DataBaseHelper {
     var result =
         await dbClient.rawQuery("SELECT * FROM $tableName WHERE id = $id");
     if (result.length == 0) return null;
-    return NoDoItem.froMap(result.first);
+    return NoDoItem.fromMap(result.first);
   }
 
   //Delete Record
